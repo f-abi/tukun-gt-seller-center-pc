@@ -1,4 +1,5 @@
 {
+  "editor.fontFamily": "JetBrains Mono, Monaco, 'Courier New', monospace , MesloLGs NF",
   "tailwindCSS.experimental.configFile": "internal/tailwind-config/src/index.ts",
   // workbench
   "workbench.list.smoothScrolling": true,
