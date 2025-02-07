@@ -9,5 +9,24 @@ export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
     name: import.meta.env.VITE_APP_TITLE,
+    locale: 'zh-CN',
+    authPageLayout: 'panel-center',
+    enableRefreshToken: false,
+  },
+  copyright: {
+    companyName: 'FuZhouxxx公司',
+    companySiteLink: 'https://gtesim.cn',
+    icp: '闽',
+    icpLink: '',
+  },
+  widget: {
+    languageToggle: false,
+  },
+  logo: {
+    enable: true,
+    source: '',
+  },
+  theme: {
+    mode: 'light',
   },
 });

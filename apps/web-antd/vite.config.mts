@@ -10,8 +10,8 @@ export default defineConfig(async () => {
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
             // mock代理目标地址
-            target: 'http://localhost:5320/api',
-            ws: true,
+            target: 'https://b.gt.test.gtesim.cn/api/',
+            ws: false,
           },
         },
       },
