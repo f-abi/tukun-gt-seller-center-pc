@@ -3,6 +3,12 @@ import { requestClient } from '#/api/request';
 export namespace GTShop {
   /** 商品状态 1=上架  2=隐藏  3=下架 */
   export type GoodesStatus = 1 | 2 | 3;
+  export interface GoodsCategory {
+    /** 分类名称 */
+    name: string;
+    /** 分类ID */
+    id: number;
+  }
   /** 货物规格选项 */
   export interface GoodsSpecsOptions {
     /** 规格名称 */
@@ -237,6 +243,18 @@ export async function getGoodsSpecsList(data: {
 }) {
   return requestClient.get<Array<Pick<GTShop.GoodsSpecs, 'options'>>>(
     '/shop/goods/skus/list',
+    {
+      params: data,
+    },
+  );
+}
+
+/**
+ * 获取商品分类列表
+ */
+export async function getGoodsCategoryList(data: GT.QueryListForm) {
+  return requestClient.get<GT.ListResult<GTShop.GoodsCategory>>(
+    '/shop/goodsCategory/list',
     {
       params: data,
     },
