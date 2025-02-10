@@ -50,6 +50,7 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
     {
       field: 'views',
       title: '浏览量',
+      width: 80,
       slots: {
         default({ row }) {
           return (
@@ -65,6 +66,7 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
     {
       field: 'sales',
       title: '销量',
+      width: 80,
       slots: {
         default({ row }) {
           return (
@@ -80,10 +82,12 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
     {
       field: 'stock',
       title: '总库存',
+      width: 100,
     },
     {
       field: 'status',
       title: '上架状态',
+      width: 100,
       slots: {
         default({ row }) {
           return (
@@ -150,14 +154,33 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
     {
       field: 'updateTime',
       title: '更新时间',
+      width: 180,
       formatter: ({ cellValue }) =>
         dayjs.unix(cellValue).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       field: 'createTime',
       title: '创建时间',
+      width: 180,
       formatter: ({ cellValue }) =>
         dayjs.unix(cellValue).format('YYYY-MM-DD HH:mm:ss'),
+    },
+    {
+      field: 'active',
+      title: '操作',
+      fixed: 'right',
+      width: 200,
+      slots: {
+        default() {
+          return (
+            <>
+              <Button class={'mr-2'} size={'small'} type={'primary'}>
+                编辑商品
+              </Button>
+            </>
+          );
+        },
+      },
     },
   ],
   exportConfig: {},
@@ -174,7 +197,6 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
     sort: true,
   },
   sortConfig: {
-    defaultSort: { field: 'category', order: 'desc' },
     remote: true,
   },
   toolbarConfig: {
@@ -207,7 +229,7 @@ async function handleStatusChange(value: SelectValue, id: number) {
   <Page auto-content-height>
     <Grid table-title="商品管理">
       <template #toolbar-tools>
-        <Button class="mr-2" type="primary" @click="() => gridApi.query()">
+        <Button type="primary" @click="() => gridApi.query()">
           新建商品
         </Button>
         <!-- <Button type="primary" @click="() => gridApi.reload()">

@@ -108,8 +108,8 @@ export namespace GTShop {
     id: number;
   }
   /** 查询商品列表结果 */
-  export type QueryGoodsListResult = GTShop.GoodesSkus['stock'] &
-    Omit<GTShop.GoodsDetail, 'skus' | 'spec'>;
+  export type QueryGoodsListResult = Omit<GTShop.GoodsDetail, 'skus' | 'spec'> &
+    Pick<GTShop.GoodesSkus, 'stock'>;
 }
 
 /**
