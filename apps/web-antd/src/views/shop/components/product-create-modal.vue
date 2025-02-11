@@ -75,10 +75,34 @@ const [BaseForm] = useVbenForm({
         allowClear: true,
         options: goodsCategoryOption,
         placeholder: '请选择商品分类',
+        optionFilterProp: 'label',
         showSearch: true,
       },
       fieldName: 'categoryId',
       label: '商品分类',
+      rules: 'required',
+    },
+    {
+      component: 'Switch',
+      componentProps: {
+        class: 'w-auto',
+      },
+      fieldName: 'isMultiSku',
+      label: '是否多Sku',
+    },
+    {
+      component: 'Switch',
+      componentProps: {
+        class: 'w-auto',
+      },
+      dependencies: {
+        if(values) {
+          return !!values.isMultiSku;
+        },
+        triggerFields: ['isMultiSku'],
+      },
+      fieldName: 'isMultiSkuOrder',
+      label: '多Sku购买',
     },
   ],
   wrapperClass: 'grid-cols-1',

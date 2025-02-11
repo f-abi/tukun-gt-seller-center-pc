@@ -7,17 +7,26 @@ import type { GTShop } from '#/api/shop/goods';
 import {
   EllipsisText,
   Page,
-  useVbenModal,
+  useVbenDrawer,
   VbenCountToAnimator,
 } from '@vben/common-ui';
 
-import { Button, Image, message, Select, Tag } from 'ant-design-vue';
+import {
+  Button,
+  Dropdown,
+  Image,
+  Menu,
+  MenuItem,
+  message,
+  Select,
+  Tag,
+} from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { editGoodsStatus, getGoodsList } from '#/api/shop/goods';
 
-import ProductCreateModal from '../components/product-create-modal.vue';
+import ProductEditDrawer from '../components/product-edit-drawer.vue';
 import { ShopGoodsCategoryTagColor, ShopGoodsStatusOption } from '../constants';
 
 const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
@@ -83,7 +92,7 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
     },
     {
       field: 'stock',
-      title: '总库存',
+      title: '剩余库存',
       width: 100,
     },
     {
@@ -173,14 +182,44 @@ const gridOptions: VxeGridProps<GTShop.QueryGoodsListResult> = {
       field: 'active',
       title: '操作',
       fixed: 'right',
-      width: 120,
+      width: 200,
       slots: {
-        default() {
+        default({ row }) {
           return (
             <>
-              <Button class={'mr-2'} size={'small'} type={'primary'}>
-                编辑商品
+              <Button
+                class={'mr-2'}
+                onClick={() => openEditGoodsDrawer(row.id)}
+                size={'small'}
+                type={'primary'}
+              >
+                编辑
               </Button>
+              <Button
+                class={'mr-2'}
+                danger={true}
+                size={'small'}
+                type={'primary'}
+              >
+                删除
+              </Button>
+              <Dropdown
+                v-slots={{
+                  overlay: () => (
+                    <Menu>
+                      <MenuItem>表单</MenuItem>
+                      <MenuItem>1</MenuItem>
+                      <MenuItem>1</MenuItem>
+                      <MenuItem>1</MenuItem>
+                    </Menu>
+                  ),
+                }}
+              >
+                <Button class={'items-center'} size={'small'} type={'dashed'}>
+                  更多
+                  <span class="icon-[lucide--chevron-down] size-2.5" />
+                </Button>
+              </Dropdown>
             </>
           );
         },
@@ -216,19 +255,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
 });
 
-const [Modal, modalApi] = useVbenModal({
+const [Drawer, drawerApi] = useVbenDrawer({
   // 连接抽离的组件
-  connectedComponent: ProductCreateModal,
+  connectedComponent: ProductEditDrawer,
 });
 
-function openModal() {
-  modalApi
-    .setData({
-      content: '外部传递的数据 content',
-      payload: '外部传递的数据 payload',
-    })
-    .open();
-}
 /** 更改商品状态 */
 async function handleStatusChange(value: SelectValue, id: number) {
   gridApi.setLoading(true);
@@ -240,14 +271,24 @@ async function handleStatusChange(value: SelectValue, id: number) {
     gridApi.query();
   }
 }
+
+function openEditGoodsDrawer(
+  /** 商品ID */
+  id: number,
+) {
+  drawerApi
+    .setState({ class: 'w-full', placement: 'right' })
+    .setData({ id })
+    .open();
+}
 </script>
 
 <template>
   <Page auto-content-height>
-    <Modal />
+    <Drawer />
     <Grid table-title="商品管理">
       <template #toolbar-tools>
-        <Button type="primary" @click="openModal"> 新建商品 </Button>
+        <Button type="primary"> 新建商品 </Button>
         <!-- <Button type="primary" @click="() => gridApi.reload()">
           刷新并返回第一页
         </Button> -->

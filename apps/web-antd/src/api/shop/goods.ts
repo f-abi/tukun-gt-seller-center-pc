@@ -76,6 +76,8 @@ export namespace GTShop {
     notes: string;
     /** 是否多Sku */
     isMultiSku: boolean;
+    /** 是否允许多Sku购买 */
+    isMultiSkuOrder: boolean;
     /** 虚假的查看数量 */
     fakeViews: number;
     /** 虚假的销售数量 */
@@ -211,6 +213,7 @@ export async function editGoodsSpecs(data: {
 }) {
   return requestClient.post('/shop/goods/specs/edit', data);
 }
+
 /**
  * 更新 / 创建商品的sku
  */
@@ -220,6 +223,16 @@ export async function editGoodsSkus(data: {
   skus: Array<GTShop.GoodesSkus>;
 }) {
   return requestClient.post('/shop/goods/skus/edit', data);
+}
+
+/**
+ * 获取商品详情
+ */
+export async function getGoodsDetail(data: {
+  /** 商品ID */
+  id: number;
+}) {
+  return requestClient.get<GTShop.GoodsDetail>(`/shop/goods/detail/${data.id}`);
 }
 
 /**
